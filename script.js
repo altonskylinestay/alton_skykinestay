@@ -1,14 +1,12 @@
-script.js
-
 const PASSWORD = "alton2026";
 
 let data = JSON.parse(localStorage.getItem("altonData")) || {
 
 hero:{
-title:`Ada malam<br>yang terlalu nyaman<br>untuk cepat pulang.`,
-desc:`Premium Skyline Stay dekat UNDIP Semarang.`,
-bg:`https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1400`,
-logo:`https://i.imgur.com/5kQZ1Zm.png`
+title:"Ada malam<br>yang terlalu nyaman<br>untuk cepat pulang.",
+desc:"Premium Skyline Stay dekat UNDIP Semarang.",
+bg:"https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1400",
+logo:"https://i.imgur.com/5kQZ1Zm.png"
 },
 
 wa:"628976660674",
@@ -28,14 +26,6 @@ name:"Skyline Room",
 price:"Rp 250.000",
 image:"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200",
 facilities:["WiFi","Netflix","AC","City View"]
-},
-
-{
-active:true,
-name:"Couple Stay Room",
-price:"Rp 320.000",
-image:"https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=1200",
-facilities:["Queen Bed","Kitchen Set","Skyline View"]
 }
 
 ],
@@ -52,32 +42,19 @@ text:"Tempatnya nyaman banget dan vibes malamnya aesthetic."
 
 };
 
-/* SAVE */
-
 function saveStorage(){
-
-localStorage.setItem(
-"altonData",
-JSON.stringify(data)
-);
-
+localStorage.setItem("altonData", JSON.stringify(data));
 }
-
-/* RENDER WEBSITE */
 
 function renderWebsite(){
 
-document.getElementById("heroTitle").innerHTML =
-data.hero.title;
-
-document.getElementById("heroDesc").innerText =
-data.hero.desc;
+document.getElementById("heroTitle").innerHTML = data.hero.title;
+document.getElementById("heroDesc").innerText = data.hero.desc;
 
 document.getElementById("hero").style.background =
-`url('${data.hero.bg}') center/cover`;
+"url('" + data.hero.bg + "') center/cover";
 
-document.getElementById("logo").src =
-data.hero.logo;
+document.getElementById("logo").src = data.hero.logo;
 
 document.getElementById("footerText").innerText =
 data.footer.text;
@@ -89,81 +66,57 @@ document.getElementById("mapsFrame").src =
 data.maps;
 
 document.getElementById("floatingWA").href =
-`https://wa.me/${data.wa}`;
+"https://wa.me/" + data.wa;
 
 renderRooms();
-
 renderTestimonials();
 
 }
 
-/* ROOM */
-
 function renderRooms(){
 
-const wrap =
-document.getElementById("roomWrap");
+const wrap = document.getElementById("roomWrap");
 
 wrap.innerHTML = "";
 
-data.rooms.forEach((room,index)=>{
+data.rooms.forEach(function(room,index){
 
-if(!room.active)return;
+if(!room.active) return;
 
-wrap.innerHTML += `
+let fasilitasHTML = "";
 
-<div class="room-card">
+room.facilities.forEach(function(f){
+fasilitasHTML += "<span>"+f+"</span>";
+});
 
-<div class="room-slider">
+wrap.innerHTML +=
 
-<img src="${room.image}">
+'<div class="room-card">' +
 
-<div class="room-price">
-${room.price}
-</div>
+'<div class="room-slider">' +
+'<img src="'+room.image+'">' +
+'<div class="room-price">'+room.price+'</div>' +
+'</div>' +
 
-</div>
+'<div class="room-content">' +
 
-<div class="room-content">
+'<h3 class="room-name">'+room.name+'</h3>' +
 
-<h3 class="room-name">
-${room.name}
-</h3>
+'<div class="facilities">'+fasilitasHTML+'</div>' +
 
-<div class="facilities">
+'<div class="booking-box">' +
 
-${room.facilities.map(f=>`
-<span>${f}</span>
-`).join("")}
+'<input type="date" id="date-'+index+'">' +
 
-</div>
+'<input type="number" id="night-'+index+'" placeholder="Lama Menginap">' +
 
-<div class="booking-box">
+'<button class="book-btn" onclick="bookingRoom('+index+')">' +
+'Booking Sekarang' +
+'</button>' +
 
-<input
-type="date"
-id="date-${index}">
-
-<input
-type="number"
-id="night-${index}"
-placeholder="Lama Menginap">
-
-<button
-class="book-btn"
-onclick="bookingRoom(${index})">
-
-Booking Sekarang
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-`;
+'</div>' +
+'</div>' +
+'</div>';
 
 });
 
@@ -171,36 +124,28 @@ renderAdminRooms();
 
 }
 
-/* BOOKING */
-
 function bookingRoom(index){
 
 const room = data.rooms[index];
 
 const date =
-document.getElementById(`date-${index}`).value;
+document.getElementById("date-"+index).value;
 
 const night =
-document.getElementById(`night-${index}`).value;
+document.getElementById("night-"+index).value;
 
 const text =
-`Halo Alton Skyline Stay
-
-Saya ingin booking:
-
-Nama Kamar: ${room.name}
-Tanggal Booking: ${date}
-Lama Menginap: ${night} malam
-
-Mohon info ketersediaannya.`;
+"Halo Alton Skyline Stay%0A%0ASaya ingin booking:%0A%0ANama Kamar: "
++ room.name +
+"%0ATanggal Booking: " + date +
+"%0ALama Menginap: " + night + " malam";
 
 window.open(
-`https://wa.me/${data.wa}?text=${encodeURIComponent(text)}`
+"https://wa.me/" + data.wa + "?text=" + text,
+"_blank"
 );
 
 }
-
-/* TESTIMONIAL */
 
 function renderTestimonials(){
 
@@ -209,39 +154,32 @@ document.getElementById("testiWrap");
 
 wrap.innerHTML = "";
 
-data.testimonials.forEach((item)=>{
+data.testimonials.forEach(function(item){
 
-wrap.innerHTML += `
+wrap.innerHTML +=
 
-<div class="testi-card">
+'<div class="testi-card">' +
 
-<div class="testi-head">
+'<div class="testi-head">' +
 
-<img src="${item.photo}">
+'<img src="'+item.photo+'">' +
 
-<div>
-<h4>${item.name}</h4>
-</div>
+'<div>' +
+'<h4>'+item.name+'</h4>' +
+'</div>' +
 
-</div>
+'</div>' +
 
-<p>${item.text}</p>
+'<p>'+item.text+'</p>' +
 
-</div>
-
-`;
+'</div>';
 
 });
 
 }
 
-/* LOGIN */
-
 function openLogin(){
-
-document.getElementById("loginScreen")
-.style.display = "flex";
-
+document.getElementById("loginScreen").style.display = "flex";
 }
 
 function loginAdmin(){
@@ -251,11 +189,9 @@ document.getElementById("adminPassword").value;
 
 if(pass === PASSWORD){
 
-document.getElementById("loginScreen")
-.style.display = "none";
+document.getElementById("loginScreen").style.display = "none";
 
-document.getElementById("adminPanel")
-.classList.add("active");
+document.getElementById("adminPanel").classList.add("active");
 
 loadAdmin();
 
@@ -268,13 +204,8 @@ alert("Password Salah");
 }
 
 function closeAdmin(){
-
-document.getElementById("adminPanel")
-.classList.remove("active");
-
+document.getElementById("adminPanel").classList.remove("active");
 }
-
-/* LOAD ADMIN */
 
 function loadAdmin(){
 
@@ -304,8 +235,6 @@ data.footer.social;
 
 }
 
-/* SAVE HERO */
-
 function saveHero(){
 
 data.hero.title =
@@ -328,8 +257,6 @@ alert("Hero berhasil disimpan");
 
 }
 
-/* SAVE WA */
-
 function saveWA(){
 
 data.wa =
@@ -343,17 +270,7 @@ alert("WA berhasil disimpan");
 
 }
 
-/* ADD ROOM */
-
 function addRoom(){
-
-if(data.rooms.length >= 20){
-
-alert("Maksimal 20 kamar");
-
-return;
-
-}
 
 const room = {
 
@@ -369,9 +286,7 @@ image:
 document.getElementById("roomImage").value,
 
 facilities:
-document.getElementById("roomFacilities")
-.value
-.split(",")
+document.getElementById("roomFacilities").value.split(",")
 
 };
 
@@ -385,8 +300,6 @@ alert("Kamar berhasil ditambahkan");
 
 }
 
-/* ADMIN ROOM */
-
 function renderAdminRooms(){
 
 const list =
@@ -394,35 +307,25 @@ document.getElementById("adminRoomList");
 
 list.innerHTML = "";
 
-data.rooms.forEach((room,index)=>{
+data.rooms.forEach(function(room,index){
 
-list.innerHTML += `
+list.innerHTML +=
 
-<div class="room-admin-item">
+'<div class="room-admin-item">' +
 
-<h4>${room.name}</h4>
+'<h4>'+room.name+'</h4>' +
 
-<p>${room.price}</p>
+'<p>'+room.price+'</p>' +
 
-<button
-class="hide-btn"
-onclick="toggleRoom(${index})">
+'<button class="hide-btn" onclick="toggleRoom('+index+')">' +
+(room.active ? "Hide" : "Show") +
+'</button>' +
 
-${room.active ? "Hide" : "Show"}
+'<button class="delete-btn" onclick="deleteRoom('+index+')">' +
+'Delete' +
+'</button>' +
 
-</button>
-
-<button
-class="delete-btn"
-onclick="deleteRoom(${index})">
-
-Delete
-
-</button>
-
-</div>
-
-`;
+'</div>';
 
 });
 
@@ -449,8 +352,6 @@ renderWebsite();
 
 }
 
-/* TESTI */
-
 function addTesti(){
 
 const testi = {
@@ -476,8 +377,6 @@ alert("Testimoni berhasil ditambahkan");
 
 }
 
-/* MAPS */
-
 function saveMaps(){
 
 data.maps =
@@ -490,8 +389,6 @@ renderWebsite();
 alert("Maps berhasil disimpan");
 
 }
-
-/* FOOTER */
 
 function saveFooter(){
 
@@ -508,7 +405,5 @@ renderWebsite();
 alert("Footer berhasil disimpan");
 
 }
-
-/* INIT */
 
 renderWebsite();
